@@ -2,46 +2,74 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8">
-    <title>Event Booking page - Welcome and choose an Event</title>
-    <style type="text/css">
-        body {
-            width: 800px;
-            margin: auto;
-        }
-    </style>
+    <title>Event Booking Page - Welcome and Choose an Event</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 </head>
 <body>
-<header>
+
+<header class="text-center my-5">
     <h1>Welcome to our Event Booking App</h1>
 </header>
-<main>
-    <form method="get" action="/">
-        <label for="search">By Event Name:</label>
-        <input type="text" name="searchName" id="search" placeholder="Search an event">
-        <br/>
-        <label for="minRating">By Minimum Event Rating (0.00 - 10.00): </label>
-        <input type="number" name="minRating" id="minRating" min="0" max="10" placeholder="Min Rating">
-        <br/>
-        <input type="submit" value="Submit">
-    </form>
 
+<main class="container">
+
+    <!-- Add New Event Button (Visible to Admin only) -->
+    <div class="mb-4">
+        <th:block sec:authorize="hasRole('ADMIN')">
+            <a href="/events/add-form" class="btn btn-primary">Add New Event</a>
+        </th:block>
+    </div>
+
+    <!-- Event Selection Section -->
     <h2>Choose an event:</h2>
-    <form th:action="@{/eventBooking}" method="POST">
-        <ul>
-            <li th:each="event : ${events}">
-                <input type="radio" name="selectedEvent" th:value="${event.name}">
-                <label th:for="${event.name}">
-                    Name: <span th:text="${event.name}"></span>,
-                    Description: <span th:text="${event.description}"></span>,
-                    Rating: <span th:text="${event.popularityScore}"></span>
-                </label>
+    <form th:action="@{/events/eventBooking}" method="POST">
+        <ul class="list-unstyled">
+            <li th:each="event : ${events}" class="mb-3">
+                <div class="d-flex align-items-center">
+                    <!-- Radio Button for Event Selection -->
+                    <input type="radio" name="selectedEvent" th:value="${event.id}" id="event-${event.id}" class="mr-2">
+                    <label th:for="'event-' + ${event.id}" class="flex-grow-1">
+                        <strong>Name:</strong> <span th:text="${event.name}"></span>,
+                        <strong>Description:</strong> <span th:text="${event.description}"></span> (Description),
+                        <strong>Rating:</strong> <span th:text="${event.popularityScore}"></span> (Rating),
+                        <strong>Location:</strong> <span th:text="${event.location.name}"></span>
+                    </label>
+
+                    <!-- Edit and Delete (Admin Only) -->
+                    <th:block sec:authorize="hasRole('ADMIN')">
+                        <a th:href="@{'/events/edit-form/{id}' (id=${event.getId()})}" class="btn btn-outline-info btn-sm mx-2">
+                            Edit
+                        </a>
+                    </th:block>
+                    <th:block sec:authorize="hasRole('ADMIN')">
+                        <a th:href="@{'/events/delete/{id}' (id=${event.getId()})}" class="btn btn-outline-danger btn-sm">
+                            Delete
+                        </a>
+                    </th:block>
+
+                    <!-- Details Button for All Users -->
+                    <a th:href="@{'/events/bookingDetails/{id}' (id=${event.getId()})}" class="btn btn-outline-primary btn-sm mx-2">
+                        Details
+                    </a>
+                </div>
             </li>
         </ul>
+
+        <!-- Ticket Selection Section -->
         <h2>Choose number of tickets:</h2>
-        <input type="number" name="numTickets" min="1" max="10"><br/>
-        <br/>
-        <input type="submit" value="Submit">
+        <input type="number" name="numTickets" min="1" max="10" required class="form-control w-25 mb-4" />
+
+        <!-- Submit Button -->
+        <input type="submit" value="Submit" class="btn btn-success w-100">
     </form>
+
 </main>
+
+<!-- Bootstrap JS -->
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
+
 </body>
 </html>
+
+

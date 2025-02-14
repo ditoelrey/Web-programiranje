@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Add/Edit Event</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+</head>
+<body>
+<form action="/events/add" method="POST">
+    <input id="id" type="hidden" name="id"
+           th:value="${event != null ? event.id : ''}">
+
+    <div class="form-group">
+        <label for="name">Event name</label>
+        <input type="text"
+               class="form-control"
+               id="name"
+               name="name"
+               th:value="${event != null ? event.name : ''}"
+               required
+               placeholder="Enter event name">
+    </div>
+
+    <div class="form-group">
+        <label for="description">Description</label>
+        <input type="text"
+               class="form-control"
+               id="description"
+               name="description"
+               th:value="${event != null ? event.description : ''}"
+               placeholder="Enter description">
+    </div>
+
+    <div class="form-group">
+        <label for="popularityScore">Popularity Score</label>
+        <input type="text"
+               class="form-control"
+               id="popularityScore"
+               name="popularityScore"
+               th:value="${event != null ? event.popularityScore : ''}"
+               placeholder="Enter popularity score">
+    </div>
+
+    <div class="form-group">
+        <label for="location">Location</label>
+        <select name="location" class="form-control">
+            <option th:if="${event != null}"
+                    th:selected="${event.location != null && event.location.id == loc.id}"
+                    th:each="loc : ${locations}"
+                    th:value="${loc.id}"
+                    th:text="${loc.name + ' - ' + loc.description + ' - ' + loc.address + ' - ' + loc.capacity}">
+            </option>
+            <option th:if="${event == null}"
+                    th:each="loc : ${locations}"
+                    th:value="${loc.id}"
+                    th:text="${loc.name + ' - ' + loc.description + ' - ' + loc.address + ' - ' + loc.capacity}">
+            </option>
+        </select>
+    </div>
+
+    <button id="submit" type="submit" class="btn btn-primary">Submit</button>
+    <a type="button" class="btn btn-secondary" href="/events">Back</a>
+</form>
+</body>
+</html>

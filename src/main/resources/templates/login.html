@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #F0F3F4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            color: #2C3E50;
+        }
+
+        form {
+            background-color: white;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+            width: 400px;
+            text-align: center;
+        }
+
+        h2 {
+            margin-bottom: 30px;
+            font-size: 36px;
+            font-weight: bold;
+            color: #27AE60;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-size: 18px;
+            font-weight: bold;
+            color: #2C3E50;
+        }
+
+        input {
+            width: 90%;
+            padding: 15px;
+            margin: 12px 0;
+            border: 2px solid #BDC3C7;
+            border-radius: 5px;
+            font-size: 18px;
+            color: #2C3E50;
+            background-color: #ECF0F1;
+        }
+
+        input:focus {
+            border-color: #27AE60;
+            outline: none;
+        }
+
+        button {
+            width: 100%;
+            padding: 15px;
+            background-color: #27AE60;
+            border: none;
+            color: white;
+            font-size: 20px;
+            font-weight: bold;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #2ECC71;
+        }
+
+        p {
+            margin: 0;
+        }
+
+        .text-danger {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+
+<form action="/login" method="post">
+    <h2>Sign in</h2>
+    <p>
+        <label for="username">Username</label>
+        <input type="text" name="username" id="username" placeholder="Username" required>
+    </p>
+    <p>
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" placeholder="Password" required>
+    </p>
+
+    <div th:if="${param.error}" th:text="${param.error}" class="text-danger"></div>
+
+    <br>
+
+
+    <button id="submit" type="submit">Log in</button>
+    <a href="/register" class="btn btn-block btn-light">Don't have an account? Register here!</a>
+</form>
+</body>
+</html>

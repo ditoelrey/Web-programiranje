@@ -1,0 +1,12 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:latest
+    container_name: "wplabevents"
+    environment:
+     - POSTGRES_USER=postgres
+     - POSTGRES_PASSWORD=123
+      -POSTGRES_DB=events
+    ports:
+      - "5432:5432"
